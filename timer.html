@@ -1,0 +1,98 @@
+<!DOCTYPE>
+<html>
+    <head>
+        <title>Timer</title>
+        <style>
+            #timer {
+                background-color: rgb(66, 179, 17);
+                border-radius: 15px;
+                margin: 0 auto;
+                padding: 20px;
+                width: 400px;
+                height: 200px;
+            }
+
+            #display {
+                background-color: rgb(220, 192, 172);
+                border-radius: 15px;
+                width: 90%;
+                height: 90px;
+                margin: 10px auto;
+                padding: 10px;
+                font-family:'Sacramento', cursive;
+                font-size: 80px;
+                text-align: right;
+                color:brown;
+            }
+
+            #footer {
+                padding: 10px;
+                width: 90%;
+                margin: 0 auto;
+            }
+
+            #button {
+                display: block;                
+                margin-left: auto;
+                border-radius: 5px;
+                width: 100px;
+                height: 50px;
+                font-size: 20px;
+                font-family: monospace;
+                background-color:rgb(157, 207, 151);
+                color: rgb(208, 19, 19);
+            }
+        </style>
+        <script src="https://code.jquery.com/jquery-3.6.3.min.js"></script>
+        <script>
+            let timerId=0;
+            let startTime=0;
+            let status="reset";
+//          Rset→start
+            function start(){
+                startTime=Date.now(); // Date.now()はタイムスタンプ（現在時刻）
+                timerId=setInterval(onTimer,100); //100ミリ秒（0.1秒）ごとに関数「onTimer」を呼び出す
+            }
+
+            function onTimer(){
+                const now=Date.now(); 
+                const diff=now-startTime;//時刻の差を求める
+                const seconds=(diff/1000.0);//Math.floorは小数点切り捨て
+
+                $('#display').html(seconds);
+            }
+            function stop(){  //ストップ処理
+                clearInterval(timerId);
+            }
+
+            //stop→reset
+            function reset(){
+                $('#display').html('0');
+            }
+
+            function onButton(){
+                if(status == 'reset'){
+                    start();
+                    status = 'start';
+                    $('button').html('stop');
+                }else if(status == 'start'){
+                    stop();
+                    status='stop';
+                    $('#button').html('Reset');
+                }else if(status == 'stop'){
+                    reset();
+                    status='reset';
+                    $('#button').html('Start');
+                }
+            }
+        </script>
+    </head>
+    <body>
+        <div id="timer">
+            <div id="display">0</div>
+            <div id="footer">
+                <button onclick="onButton();" id="button">Start</button>
+            </div>
+        </div>
+    </body>
+</html>
